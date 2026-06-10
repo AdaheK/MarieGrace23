@@ -8,11 +8,13 @@ import IntroScreen from "./components/IntroScreen";
 import Header from "./components/Header";
 import GiftNode from "./components/GiftNode";
 import GiftModal from "./components/GiftModal";
+import FinalClapModal from "./components/FinalClapModal";
 
 export default function BirthdayGiftExperience() {
   const [hasStarted, setHasStarted] = useState(false);
   const [completed, setCompleted] = useState([]);
   const [selectedGift, setSelectedGift] = useState(null);
+  const [showFinalClap, setShowFinalClap] = useState(false);
 
   useEffect(() => {
     setCompleted(loadProgress());
@@ -81,15 +83,19 @@ export default function BirthdayGiftExperience() {
       </div>
 
       <AnimatePresence>
-        {selectedGift && (
-          <GiftModal
-            key={selectedGift.id}
-            gift={selectedGift}
-            isCompleted={completed.includes(selectedGift.id)}
-            onClose={() => setSelectedGift(null)}
-            onComplete={completeGift}
-          />
-        )}
+          {selectedGift && (
+            <GiftModal
+              gift={selectedGift}
+              isCompleted={completed.includes(selectedGift.id)}
+              onClose={() => setSelectedGift(null)}
+              onComplete={completeGift}
+              onFinalClap={() => setShowFinalClap(true)}
+            />
+          )}
+
+        {showFinalClap && (
+        <FinalClapModal onClose={() => setShowFinalClap(false)} />
+                )}
       </AnimatePresence>
     </main>
   );

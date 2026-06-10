@@ -38,8 +38,17 @@ export const GIFTS_DATA = [
   { id: 14, secretName: "Cadeau #14", type: "troll", mechanic: "candles", label: "23 bougies", title: "Le droit de me faire un bon plat", candles: 23, content: "🍲 Tu viens de gagner le droit incroyable de me faire un bon plat que tu pourras manger avec moi." },
   { id: 15, secretName: "Cadeau #15", type: "bon", mechanic: "catch", label: "Panier", title: "Maillot de Côte d'Ivoire", itemsToCatch: ["⚽", "🇨🇮", "👕"], content: "🇨🇮 Tu viens de gagner un maillot de Côte d'Ivoire afin de mieux supporter les éléphants pendant ce mondial." },
   { id: 16, secretName: "Cadeau #16", type: "bon", mechanic: "sutom", label: "Sutom", title: "Gloss", answer: "HYDRATANT", maxTries: 6, content: "🌸 Tu viens de gagner un gloss DIOR hydratant pour tes lèvres." },
-  { id: 17, secretName: "Cadeau #17", type: "emotionnel", mechanic: "shuffle", label: "Où était le cadeau ?", title: "Messages vidéo des proches", boxes: 6, showTime: 2000, video: "/videos/proches.mp4", content: "🎥 Tu viens de gagner une vidéo de quelques proches, essaye de ne pas pleurer." },
-  { id: 18, secretName: "Cadeau #18", type: "emotionnel", mechanic: "whoiswho", label: "Qui de nous deux ?", title: "je t'aime", questions: [{ text: "Qui a dit je t'aime en premier ?", answer: "Toi" }, { text: "Qui n'aimes pas faire la vaiselle?", answer: "Nous deux" }, { text: "Qui gnan le plus ?", answer: "Moi" }, { text: "Qui fête son anniversaire aujourd'hui?", answer: "Moi" }], content: "❤️ Tu viens de gagner un JE T'AIME tout simplement." },
+  {
+  id: 17,
+  secretName: "Cadeau #17",
+  type: "emotionnel",
+  mechanic: "shuffle",
+  label: "Teaser final",
+  title: "Une dernière surprise t’attend...",
+  content:
+    "🎬 Ce n’est pas encore la fin. Une surprise spéciale t’attend après le dernier cadeau. Continue jusqu’au bout ❤️",
+},  
+{ id: 18, secretName: "Cadeau #18", type: "emotionnel", mechanic: "whoiswho", label: "Qui de nous deux ?", title: "je t'aime", questions: [{ text: "Qui a dit je t'aime en premier ?", answer: "Toi" }, { text: "Qui n'aimes pas faire la vaiselle?", answer: "Nous deux" }, { text: "Qui gnan le plus ?", answer: "Moi" }, { text: "Qui fête son anniversaire aujourd'hui?", answer: "Moi" }], content: "❤️ Tu viens de gagner un JE T'AIME tout simplement." },
   { id: 19, secretName: "Cadeau #19", type: "bon", mechanic: "casino", label: "Jackpot", title: "Séance corps complet à la salle", winAttempt: 23, symbols: ["💪", "🏋️", "🔥", "💖", "🎰"], content: "🏋️ Tu viens de gagner une séance corps complet à la salle avec le meilleur coach (MOI)." },
   {
   id: 20,

@@ -37,11 +37,9 @@ export default function GiftModal({
   onClose,
   onComplete,
   isCompleted,
+  onFinalClap,
 }) {
-  const [phase, setPhase] = useState(
-    isCompleted ? "revealed" : "challenge"
-  );
-
+  const [phase, setPhase] = useState(isCompleted ? "revealed" : "challenge");
   const [quizError, setQuizError] = useState(false);
   const [trollMsg, setTrollMsg] = useState(null);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -49,28 +47,29 @@ export default function GiftModal({
   const reveal = useCallback(() => {
     setPhase("revealed");
     setShowConfetti(true);
-
     onComplete(gift.id);
-
     setTimeout(() => setShowConfetti(false), 3200);
   }, [gift.id, onComplete]);
 
-  // ─────────────────────────────────────────────
-  // CHALLENGES
-  // ─────────────────────────────────────────────
+  const closeReveal = () => {
+    if (gift.id === 23 && phase === "revealed") {
+      onClose();
+      setTimeout(() => {
+        onFinalClap?.();
+      }, 350);
+      return;
+    }
+
+    onClose();
+  };
+
   const renderChallenge = () => {
     if (gift.mechanic === "none") {
       return (
         <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
           <motion.div
-            animate={{
-              y: [0, -8, 0],
-              rotate: [0, -3, 3, 0],
-            }}
-            transition={{
-              duration: 2.7,
-              repeat: Infinity,
-            }}
+            animate={{ y: [0, -8, 0], rotate: [0, -3, 3, 0] }}
+            transition={{ duration: 2.7, repeat: Infinity }}
             className="text-6xl"
           >
             🎁
@@ -80,9 +79,7 @@ export default function GiftModal({
             Ce cadeau s'ouvre directement.
           </p>
 
-          <PrimaryButton onClick={reveal}>
-            Ouvrir le cadeau
-          </PrimaryButton>
+          <PrimaryButton onClick={reveal}>Ouvrir le cadeau</PrimaryButton>
         </div>
       );
     }
@@ -97,18 +94,11 @@ export default function GiftModal({
               <ChoiceButton
                 key={choice}
                 onClick={() => {
-                  if (
-                    gift.allCorrect ||
-                    choice === gift.answer
-                  ) {
+                  if (gift.allCorrect || choice === gift.answer) {
                     reveal();
                   } else {
                     setQuizError(true);
-
-                    setTimeout(
-                      () => setQuizError(false),
-                      1200
-                    );
+                    setTimeout(() => setQuizError(false), 1200);
                   }
                 }}
               >
@@ -131,14 +121,8 @@ export default function GiftModal({
         return (
           <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
             <div className="text-4xl">😂</div>
-
-            <p className="text-[#6f2948]/75 text-sm max-w-lg">
-              {trollMsg}
-            </p>
-
-            <PrimaryButton
-              onClick={() => setTrollMsg(null)}
-            >
+            <p className="text-[#6f2948]/75 text-sm max-w-lg">{trollMsg}</p>
+            <PrimaryButton onClick={() => setTrollMsg(null)}>
               Essayer une autre option
             </PrimaryButton>
           </div>
@@ -160,14 +144,11 @@ export default function GiftModal({
                     reveal();
                   } else {
                     const trollIndex =
-                      (index < gift.correctChoice
-                        ? index
-                        : index - 1) %
+                      (index < gift.correctChoice ? index : index - 1) %
                       (gift.trollChoices?.length || 1);
 
                     setTrollMsg(
-                      gift.trollChoices?.[trollIndex] ||
-                        "Mauvaise option !"
+                      gift.trollChoices?.[trollIndex] || "Mauvaise option !"
                     );
                   }
                 }}
@@ -183,137 +164,39 @@ export default function GiftModal({
       );
     }
 
-    // ─────────────────────────────────────────────
-    // GAMES
-    // ─────────────────────────────────────────────
     if (gift.mechanic === "differences")
-      return (
-        <DifferencesGame
-          gift={gift}
-          onSuccess={reveal}
-        />
-      );
-
+      return <DifferencesGame gift={gift} onSuccess={reveal} />;
     if (gift.mechanic === "anagram")
-      return (
-        <AnagramGame
-          gift={gift}
-          onSuccess={reveal}
-        />
-      );
-
+      return <AnagramGame gift={gift} onSuccess={reveal} />;
     if (gift.mechanic === "secretcode")
-      return (
-        <SecretCodeGame
-          gift={gift}
-          onSuccess={reveal}
-        />
-      );
-
+      return <SecretCodeGame gift={gift} onSuccess={reveal} />;
     if (gift.mechanic === "phototetris")
-      return (
-        <PhotoTetrisGame
-          gift={gift}
-          onSuccess={reveal}
-        />
-      );
-
+      return <PhotoTetrisGame gift={gift} onSuccess={reveal} />;
     if (gift.mechanic === "colors")
-      return (
-        <ColorSequenceGame
-          gift={gift}
-          onSuccess={reveal}
-        />
-      );
-
+      return <ColorSequenceGame gift={gift} onSuccess={reveal} />;
     if (gift.mechanic === "candles")
-      return (
-        <CandlesGame
-          gift={gift}
-          onSuccess={reveal}
-        />
-      );
-
+      return <CandlesGame gift={gift} onSuccess={reveal} />;
     if (gift.mechanic === "catch")
-      return (
-        <CatchGame
-          gift={gift}
-          onSuccess={reveal}
-        />
-      );
-
+      return <CatchGame gift={gift} onSuccess={reveal} />;
     if (gift.mechanic === "sutom")
-      return (
-        <SutomGame
-          gift={gift}
-          onSuccess={reveal}
-        />
-      );
-
+      return <SutomGame gift={gift} onSuccess={reveal} />;
     if (gift.mechanic === "shuffle")
-      return (
-        <ShuffleGiftGame
-          gift={gift}
-          onSuccess={reveal}
-        />
-      );
-
+      return <ShuffleGiftGame gift={gift} onSuccess={reveal} />;
     if (gift.mechanic === "casino")
-      return (
-        <CasinoJackpotGame
-          gift={gift}
-          onSuccess={reveal}
-        />
-      );
-
+      return <CasinoJackpotGame gift={gift} onSuccess={reveal} />;
     if (gift.mechanic === "lyrics4")
-      return (
-        <Lyrics4Game
-          gift={gift}
-          onSuccess={reveal}
-        />
-      );
-
+      return <Lyrics4Game gift={gift} onSuccess={reveal} />;
     if (gift.mechanic === "connectdots")
-      return (
-        <ConnectDotsGame
-          gift={gift}
-          onSuccess={reveal}
-        />
-      );
-
+      return <ConnectDotsGame gift={gift} onSuccess={reveal} />;
     if (gift.mechanic === "qrcode")
-      return (
-        <QRCodeGame
-          gift={gift}
-          onSuccess={reveal}
-        />
-      );
-
+      return <QRCodeGame gift={gift} onSuccess={reveal} />;
     if (gift.mechanic === "cemantix")
-      return (
-        <CemantixGame
-          gift={gift}
-          onSuccess={reveal}
-        />
-      );
+      return <CemantixGame gift={gift} onSuccess={reveal} />;
 
     if (gift.mechanic === "memory")
-      return (
-        <MemoryGame
-          pairs={gift.pairs}
-          onSuccess={reveal}
-        />
-      );
-
+      return <MemoryGame pairs={gift.pairs} onSuccess={reveal} />;
     if (gift.mechanic === "puzzle")
-      return (
-        <PuzzleGame
-          events={gift.events}
-          onSuccess={reveal}
-        />
-      );
-
+      return <PuzzleGame events={gift.events} onSuccess={reveal} />;
     if (gift.mechanic === "roulette")
       return (
         <RouletteGame
@@ -322,15 +205,8 @@ export default function GiftModal({
           onSuccess={reveal}
         />
       );
-
     if (gift.mechanic === "texttrous")
-  return (
-    <TextTrousGame
-      gift={gift}
-      onSuccess={reveal}
-    />
-  );
-
+      return <TextTrousGame gift={gift} onSuccess={reveal} />;
     if (gift.mechanic === "motsmeles")
       return (
         <MotsMeles
@@ -340,90 +216,54 @@ export default function GiftModal({
           onSuccess={reveal}
         />
       );
-
     if (gift.mechanic === "whoiswho")
-      return (
-        <WhoIsWho
-          questions={gift.questions}
-          onSuccess={reveal}
-        />
-      );
-
+      return <WhoIsWho questions={gift.questions} onSuccess={reveal} />;
     if (gift.mechanic === "countdown23")
       return <Countdown23 onSuccess={reveal} />;
 
     return (
       <div className="h-full flex items-center justify-center text-center">
-        <p className="text-[#6f2948]">
-          Ce mini-jeu arrive bientôt 🎁
-        </p>
+        <p className="text-[#6f2948]">Ce mini-jeu arrive bientôt 🎁</p>
       </div>
     );
   };
 
-  // ─────────────────────────────────────────────
-  // MODAL
-  // ─────────────────────────────────────────────
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 flex items-center justify-center p-2 md:p-4 bg-[#3b1024]/45 backdrop-blur-xl overflow-hidden"
-      onClick={(e) =>
-        e.target === e.currentTarget && onClose()
-      }
+      onClick={(e) => e.target === e.currentTarget && closeReveal()}
     >
       <Confetti active={showConfetti} />
 
       <motion.div
-        initial={{
-          opacity: 0,
-          scale: 0.92,
-          y: 24,
-        }}
-        animate={{
-          opacity: 1,
-          scale: 1,
-          y: 0,
-        }}
-        exit={{
-          opacity: 0,
-          scale: 0.95,
-        }}
-        transition={{
-          type: "spring",
-          damping: 25,
-          stiffness: 300,
-        }}
+        initial={{ opacity: 0, scale: 0.92, y: 24 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        transition={{ type: "spring", damping: 25, stiffness: 300 }}
         className="relative w-full max-w-4xl h-[min(92dvh,780px)] rounded-[2rem] border border-white/80 bg-[#fff5fb] text-[#3b1024] shadow-2xl shadow-pink-300/60 overflow-hidden flex flex-col"
       >
-        {/* HEADER */}
         <div className="flex items-start justify-between gap-4 px-5 py-4 md:px-7 md:py-5 border-b border-pink-100 bg-white/65 shrink-0">
           <div>
-            <p className="text-sm text-[#b53673]">
-              {gift.secretName}
-            </p>
+            <p className="text-sm text-[#b53673]">{gift.secretName}</p>
 
             <h2 className="text-2xl md:text-4xl font-black mt-1 leading-tight">
-              {phase === "revealed"
-                ? gift.title
-                : gift.secretName}
+              {phase === "revealed" ? gift.title : gift.secretName}
             </h2>
           </div>
 
           <button
-            onClick={onClose}
+            onClick={closeReveal}
             className="rounded-xl bg-[#3b1024] text-white p-3 shrink-0"
           >
             <X size={20} />
           </button>
         </div>
 
-        {/* CONTENT */}
         <div className="relative flex-1 min-h-0 p-3 md:p-5 overflow-hidden">
           <AnimatePresence mode="wait">
-            {/* CHALLENGE */}
             {phase === "challenge" && (
               <motion.div
                 key="challenge"
@@ -436,73 +276,58 @@ export default function GiftModal({
               </motion.div>
             )}
 
-            {/* REVEAL */}
             {phase === "revealed" && (
               <motion.div
                 key="reveal"
-                initial={{
-                  opacity: 0,
-                  scale: 0.96,
-                  y: 18,
-                }}
-                animate={{
-                  opacity: 1,
-                  scale: 1,
-                  y: 0,
-                }}
+                initial={{ opacity: 0, scale: 0.96, y: 18 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
                 className="h-full grid md:grid-cols-[0.9fr_1.1fr] gap-4 items-center overflow-hidden"
               >
-                {/* LEFT SIDE */}
-<div className="h-[250px] md:h-full max-h-[470px] rounded-[2rem] border border-pink-100 shadow-xl shadow-pink-200/40 overflow-hidden bg-[#3b1024]">
-  {gift.video ? (
-    <video
-      src={gift.video}
-      controls
-      playsInline
-      preload="metadata"
-      className="h-full w-full object-contain bg-black"
-    />
-  ) : gift.voiceAudio ? (
-    <div className="h-full w-full flex flex-col items-center justify-center gap-6 px-6 text-white bg-gradient-to-br from-[#3b1024] to-[#8b2f5d]">
-      <div className="text-7xl">🎙️</div>
+                <div className="h-[250px] md:h-full max-h-[470px] rounded-[2rem] border border-pink-100 shadow-xl shadow-pink-200/40 overflow-hidden bg-[#3b1024]">
+                  {gift.video ? (
+                    <video
+                      src={gift.video}
+                      controls
+                      playsInline
+                      preload="metadata"
+                      className="h-full w-full object-contain bg-black"
+                    />
+                  ) : gift.voiceAudio ? (
+                    <div className="h-full w-full flex flex-col items-center justify-center gap-6 px-6 text-white bg-gradient-to-br from-[#3b1024] to-[#8b2f5d]">
+                      <div className="text-7xl">🎙️</div>
+                      <p className="text-center text-lg font-black">
+                        Message vocal
+                      </p>
+                      <audio
+                        src={gift.voiceAudio}
+                        controls
+                        preload="metadata"
+                        className="w-full max-w-sm"
+                      />
+                    </div>
+                  ) : (
+                    <div
+                      className="h-full w-full bg-cover bg-center"
+                      style={{
+                        backgroundImage: `linear-gradient(rgba(255,245,251,.20), rgba(59,16,36,.20)), url(${getRewardImage(
+                          gift.id
+                        )})`,
+                      }}
+                    >
+                      <div className="h-full w-full rounded-[2rem] flex items-center justify-center bg-pink-100/25 backdrop-blur-[1px]">
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1, rotate: [0, -3, 3, 0] }}
+                          transition={{ delay: 0.2 }}
+                          className="text-7xl drop-shadow-xl"
+                        >
+                          🎁
+                        </motion.div>
+                      </div>
+                    </div>
+                  )}
+                </div>
 
-      <p className="text-center text-lg font-black">
-        Message vocal
-      </p>
-
-      <audio
-        src={gift.voiceAudio}
-        controls
-        preload="metadata"
-        className="w-full max-w-sm"
-      />
-    </div>
-  ) : (
-    <div
-      className="h-full w-full bg-cover bg-center"
-      style={{
-        backgroundImage: `linear-gradient(rgba(255,245,251,.20), rgba(59,16,36,.20)), url(${getRewardImage(
-          gift.id
-        )})`,
-      }}
-    >
-      <div className="h-full w-full rounded-[2rem] flex items-center justify-center bg-pink-100/25 backdrop-blur-[1px]">
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{
-            scale: 1,
-            rotate: [0, -3, 3, 0],
-          }}
-          transition={{ delay: 0.2 }}
-          className="text-7xl drop-shadow-xl"
-        >
-          🎁
-        </motion.div>
-      </div>
-    </div>
-  )}
-</div>
-                {/* RIGHT SIDE */}
                 <div className="space-y-4 min-h-0">
                   <div className="rounded-3xl bg-white border border-pink-100 p-5 md:p-6 shadow-xl shadow-pink-200/40">
                     <p className="text-xs text-pink-600/80 uppercase tracking-widest mb-3 font-bold">
@@ -514,8 +339,10 @@ export default function GiftModal({
                     </p>
                   </div>
 
-                  <PrimaryButton onClick={onClose}>
-                    Continuer le chemin →
+                  <PrimaryButton onClick={closeReveal}>
+                    {gift.id === 23
+                      ? "Terminer l’aventure →"
+                      : "Continuer le chemin →"}
                   </PrimaryButton>
                 </div>
               </motion.div>
@@ -527,9 +354,6 @@ export default function GiftModal({
   );
 }
 
-// ─────────────────────────────────────────────
-// UI
-// ─────────────────────────────────────────────
 function ChallengeText({ gift }) {
   return (
     <div className="rounded-3xl bg-white/75 border border-pink-100 p-4 md:p-5">
