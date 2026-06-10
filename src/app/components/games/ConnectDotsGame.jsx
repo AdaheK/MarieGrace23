@@ -69,7 +69,7 @@ export default function ConnectDotsGame({ onSuccess }) {
   return (
     <div className="h-full flex flex-col gap-3 overflow-hidden">
       <p className="text-center text-[#9d627d] text-sm md:text-base shrink-0">
-        Relie les points dans l'ordre.
+        clique sur les points dans l'ordre.
       </p>
 
       <div className="relative flex-1 rounded-[2rem] border border-pink-100 bg-white/40 overflow-hidden">

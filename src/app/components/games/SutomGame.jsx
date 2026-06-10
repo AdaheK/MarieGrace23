@@ -125,7 +125,7 @@ export default function SutomGame({ gift, onSuccess }) {
       {/* ─────────────── Infos ─────────────── */}
       <div className="text-center space-y-1 shrink-0">
         <p className="text-[14px] md:text-xs text-[#6f2948]/70">
-          Trouve ton cadeau de {answer.length} lettres.
+          Trouve un mot de {answer.length} lettres en rapport avec ton cadeau.
         </p>
 
         <p className="text-[11px] md:text-[11px] text-[#9d3b68]/70">

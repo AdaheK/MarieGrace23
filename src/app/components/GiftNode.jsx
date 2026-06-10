@@ -1,7 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CheckCircle2, Crown, Gift, Lock, MapPin } from "lucide-react";
+import {
+  CheckCircle2,
+  Crown,
+  Gift,
+  Lock,
+  MapPin,
+} from "lucide-react";
 
 function getGiftImage(id, isCompleted) {
   const number = String(id).padStart(2, "0");
@@ -9,6 +15,32 @@ function getGiftImage(id, isCompleted) {
   return isCompleted
     ? `/images/rewards/reward-${number}.jpeg`
     : `/images/gifts/gift-${number}.png`;
+}
+
+// ─────────────────────────────────────────────
+// Dates de déblocage
+// ─────────────────────────────────────────────
+
+const UNLOCK_DATES = {
+  22: new Date("2026-06-10T12:24:00"),
+  23: new Date("2026-06-10T12:25:00"),
+};
+
+function getCountdown(targetDate) {
+  const now = new Date();
+  const diff = targetDate - now;
+
+  if (diff <= 0) return null;
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor(
+    (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+  );
+  const minutes = Math.floor(
+    (diff % (1000 * 60 * 60)) / (1000 * 60)
+  );
+
+  return `${days}j ${hours}h ${minutes}min`;
 }
 
 export default function GiftNode({
@@ -21,6 +53,16 @@ export default function GiftNode({
   const isLeft = index % 2 === 0;
   const isFinal = gift.id === 22 || gift.id === 23;
 
+  // ─────────────────────────────────────────────
+  // Gestion countdown
+  // ─────────────────────────────────────────────
+
+  const unlockDate = UNLOCK_DATES[gift.id];
+  const countdown = unlockDate ? getCountdown(unlockDate) : null;
+
+  // Si countdown existe → verrou forcé
+  const reallyUnlocked = countdown ? false : isUnlocked;
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 26 }}
@@ -28,6 +70,7 @@ export default function GiftNode({
       transition={{ delay: index * 0.035 }}
       className="relative grid md:grid-cols-[minmax(0,1fr)_96px_minmax(0,1fr)] gap-4 md:gap-6 items-stretch md:min-h-[210px]"
     >
+      {/* Ligne centrale */}
       <div className="hidden md:flex md:col-start-2 relative justify-center items-center h-full min-h-[210px]">
         <div className="absolute top-0 bottom-0 w-1 rounded-full bg-gradient-to-b from-pink-300 via-fuchsia-300 to-pink-300" />
 
@@ -35,7 +78,7 @@ export default function GiftNode({
           className={`relative z-10 h-14 w-14 rounded-full border-4 flex items-center justify-center shadow-xl ${
             isCompleted
               ? "bg-emerald-100 border-emerald-300 text-emerald-700 shadow-emerald-100"
-              : isUnlocked
+              : reallyUnlocked
               ? "bg-[#3b1024] border-pink-200 text-white shadow-pink-200"
               : "bg-white border-pink-100 text-pink-300"
           }`}
@@ -50,6 +93,7 @@ export default function GiftNode({
         </div>
       </div>
 
+      {/* Card */}
       <div
         className={`flex items-center h-full ${
           isLeft
@@ -58,40 +102,45 @@ export default function GiftNode({
         }`}
       >
         <motion.button
-          whileHover={isUnlocked ? { y: -5, scale: 1.015 } : {}}
-          whileTap={isUnlocked ? { scale: 0.98 } : {}}
-          onClick={() => isUnlocked && onOpen(gift)}
+          whileHover={reallyUnlocked ? { y: -5, scale: 1.015 } : {}}
+          whileTap={reallyUnlocked ? { scale: 0.98 } : {}}
+          onClick={() => reallyUnlocked && onOpen(gift)}
           className={`relative w-full text-left rounded-[2rem] border p-0 overflow-hidden transition shadow-xl ${
             isCompleted
               ? "border-emerald-200 bg-emerald-50/85 shadow-emerald-100/70"
-              : isUnlocked
+              : reallyUnlocked
               ? "border-white/80 bg-white/75 hover:bg-white/90 shadow-pink-200/65"
-              : "border-white/50 bg-white/35 opacity-60 cursor-not-allowed shadow-transparent"
+              : "border-white/50 bg-white/35 opacity-75 cursor-not-allowed shadow-transparent"
           }`}
         >
+          {/* Background */}
           <div
             className="absolute inset-0 bg-cover bg-center opacity-55"
             style={{
-              backgroundImage: `url(${getGiftImage(gift.id, isCompleted)})`,
+              backgroundImage: `url(${getGiftImage(
+                gift.id,
+                isCompleted
+              )})`,
             }}
           />
 
           <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-pink-50/65 to-white/60" />
 
+          {/* Content */}
           <div className="relative z-10 p-5 md:p-6 min-h-[168px] flex flex-col justify-between">
             <div className="flex items-start justify-between gap-4">
               <div
                 className={`rounded-2xl p-3 border backdrop-blur-md ${
                   isCompleted
                     ? "bg-emerald-100/90 border-emerald-200 text-emerald-800"
-                    : isUnlocked
+                    : reallyUnlocked
                     ? "bg-[#3b1024] border-[#3b1024] text-white"
                     : "bg-white/55 border-white/70 text-[#3b1024]/50"
                 }`}
               >
                 {isCompleted ? (
                   <CheckCircle2 size={24} />
-                ) : isUnlocked ? (
+                ) : reallyUnlocked ? (
                   <Gift size={24} />
                 ) : (
                   <Lock size={24} />
@@ -107,7 +156,9 @@ export default function GiftNode({
               <p className="text-xs uppercase tracking-[0.22em] text-[#9d3b68]/75 mb-2">
                 {isCompleted
                   ? "Ouvert"
-                  : isUnlocked
+                  : countdown
+                  ? "Déblocage bientôt"
+                  : reallyUnlocked
                   ? "Disponible"
                   : "Verrouillé"}
               </p>
@@ -116,13 +167,28 @@ export default function GiftNode({
                 {gift.secretName}
               </h3>
 
-              <p className="mt-2 text-sm text-[#6f2948]/70">
-                {isCompleted
-                  ? gift.title
-                  : isUnlocked
-                  ? "Clique pour découvrir cette étape."
-                  : "Continue le chemin pour y accéder."}
-              </p>
+              {/* Countdown */}
+              {countdown ? (
+                <div className="mt-3">
+                  <div className="rounded-2xl bg-[#3b1024] text-white px-4 py-3 text-center shadow-lg">
+                    <p className="text-[10px] uppercase tracking-widest opacity-70">
+                      Débloque dans
+                    </p>
+
+                    <p className="text-lg font-black mt-1">
+                      ⏳ {countdown}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <p className="mt-2 text-sm text-[#6f2948]/70">
+                  {isCompleted
+                    ? gift.title
+                    : reallyUnlocked
+                    ? "Clique pour découvrir cette étape."
+                    : "Continue le chemin pour y accéder."}
+                </p>
+              )}
             </div>
           </div>
         </motion.button>

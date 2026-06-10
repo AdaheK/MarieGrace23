@@ -95,9 +95,9 @@ export default function TextTrousGame({ gift, onSuccess }) {
 
   return (
     <div className="h-full flex flex-col justify-center gap-3 overflow-hidden px-2">
-      {gift?.audio && (
+      {gift?.backgroundAudio && (
         <audio ref={audioRef} loop preload="metadata">
-          <source src={gift.audio} type="audio/mpeg" />
+          <source src={gift.backgroundAudio} type="audio/mpeg" />
         </audio>
       )}
 
@@ -112,7 +112,7 @@ export default function TextTrousGame({ gift, onSuccess }) {
           </p>
         )}
 
-        {gift?.audio && (
+        {gift?.backgroundAudio && (
           <button
             type="button"
             onClick={toggleMusic}

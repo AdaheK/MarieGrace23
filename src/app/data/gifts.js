@@ -38,7 +38,7 @@ export const GIFTS_DATA = [
   { id: 14, secretName: "Cadeau #14", type: "troll", mechanic: "candles", label: "23 bougies", title: "Le droit de me faire un bon plat", candles: 23, content: "🍲 Tu viens de gagner le droit incroyable de me faire un bon plat que tu pourras manger avec moi." },
   { id: 15, secretName: "Cadeau #15", type: "bon", mechanic: "catch", label: "Panier", title: "Maillot de Côte d'Ivoire", itemsToCatch: ["⚽", "🇨🇮", "👕"], content: "🇨🇮 Tu viens de gagner un maillot de Côte d'Ivoire afin de mieux supporter les éléphants pendant ce mondial." },
   { id: 16, secretName: "Cadeau #16", type: "bon", mechanic: "sutom", label: "Sutom", title: "Gloss", answer: "HYDRATANT", maxTries: 6, content: "🌸 Tu viens de gagner un gloss DIOR hydratant pour tes lèvres." },
-  { id: 17, secretName: "Cadeau #17", type: "emotionnel", mechanic: "shuffle", label: "Où était le cadeau ?", title: "Messages vidéo des proches", boxes: 6, showTime: 2000, video: "/videos/proches.mp4", content: "🎥 Tu viens de gagner une vidéo de quelques proches." },
+  { id: 17, secretName: "Cadeau #17", type: "emotionnel", mechanic: "shuffle", label: "Où était le cadeau ?", title: "Messages vidéo des proches", boxes: 6, showTime: 2000, video: "/videos/proches.mp4", content: "🎥 Tu viens de gagner une vidéo de quelques proches, essaye de ne pas pleurer." },
   { id: 18, secretName: "Cadeau #18", type: "emotionnel", mechanic: "whoiswho", label: "Qui de nous deux ?", title: "je t'aime", questions: [{ text: "Qui a dit je t'aime en premier ?", answer: "Toi" }, { text: "Qui n'aimes pas faire la vaiselle?", answer: "Nous deux" }, { text: "Qui gnan le plus ?", answer: "Moi" }, { text: "Qui fête son anniversaire aujourd'hui?", answer: "Moi" }], content: "❤️ Tu viens de gagner un JE T'AIME tout simplement." },
   { id: 19, secretName: "Cadeau #19", type: "bon", mechanic: "casino", label: "Jackpot", title: "Séance corps complet à la salle", winAttempt: 23, symbols: ["💪", "🏋️", "🔥", "💖", "🎰"], content: "🏋️ Tu viens de gagner une séance corps complet à la salle avec le meilleur coach (MOI)." },
   {
@@ -47,7 +47,7 @@ export const GIFTS_DATA = [
   type: "musique",
   mechanic: "texttrous",
   label: "Paroles trouées",
-  title: "4 Kampé 🎶",
+  title: "Parfum Yara Candy",
 
   lyrics: `
 Yo, Jouda
@@ -67,11 +67,12 @@ Chérie, nou sou sa kampé
 `,
 
   answers: ["YAKUZA", "TALES", "KAMPÉ", "FULL BBL"],
-  audio: "/sounds/4kampe.mp3",
+  backgroundAudio: "/sounds/4kampe.mp3",
 
   content:
-    "🎶 Ahh oue tu connais parfaitement les paroles. Tu viens donc de gagner 1 place pour le concert ou festival de ton choix et je t'accompagne même si je n'écoute pas la personne"
-},  { id: 21, secretName: "Cadeau #21", type: "emotionnel", mechanic: "connectdots", label: "Relie les points", title: "Message vocal de moi", points: 23, shape: "heart", audio: "/sounds/message.mp3", content: "🎙️ Tu arrives vers la fin, j'espère que jusque là tous les cadeaux t'ont plu. On va passer aux deux derniers cadeaux." },
+    "🎶 Ahh oue tu connais parfaitement les paroles. Tu viens donc de gagner un parfum Yara, j'espère qu'il te plaira"
+},
+  { id: 21, secretName: "Cadeau #21", type: "emotionnel", mechanic: "connectdots", label: "Relie les points", title: "Message vocal de moi", points: 23, shape: "heart", voiceAudio: "/sounds/message.mp3", content: "🎙️ Tu arrives vers la fin, j'espère que jusque là tous les cadeaux t'ont plu. On va passer aux deux derniers cadeaux." },
   { id: 22, secretName: "Cadeau #22", type: "surprise", mechanic: "qrcode", label: "QR Code", title: "Carte cadeau Zara de 70 euros", qrText: "Dis ce mot à un de nos proches : Quand tu fais ça la c'est doux deh", answer: "Allan est le meilleur mec du monde!!!", content: "Pour l'avant dernier cadeau, tu viens de gagner une carte cadeau Zara de 70 euros." },
   { id: 23, secretName: "Cadeau #23", type: "surprise", mechanic: "cemantix", label: "Final", title: "Une New balance", answer: "telephone", semanticHints: [{ word: "cadeau", score: 18 }, { word: "technologie", score: 42 }, { word: "appel", score: 76 }, { word: "telephone", score: 100 }], countdown: 23, content: "Tu viens de gagner une paire de baskets New Balance." },
 ];

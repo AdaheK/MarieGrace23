@@ -462,7 +462,7 @@ export default function GiftModal({
       preload="metadata"
       className="h-full w-full object-contain bg-black"
     />
-  ) : gift.audio ? (
+  ) : gift.voiceAudio ? (
     <div className="h-full w-full flex flex-col items-center justify-center gap-6 px-6 text-white bg-gradient-to-br from-[#3b1024] to-[#8b2f5d]">
       <div className="text-7xl">🎙️</div>
 
@@ -471,7 +471,7 @@ export default function GiftModal({
       </p>
 
       <audio
-        src={gift.audio}
+        src={gift.voiceAudio}
         controls
         preload="metadata"
         className="w-full max-w-sm"
