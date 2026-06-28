@@ -22,8 +22,8 @@ function getGiftImage(id, isCompleted) {
 // ─────────────────────────────────────────────
 
 const UNLOCK_DATES = {
-  22: new Date("2026-06-10T12:24:00"),
-  23: new Date("2026-06-10T12:25:00"),
+  22: new Date("2026-07-04T02:15:00"),
+  23: new Date("2026-07-04T02:30:00"),
 };
 
 function getCountdown(targetDate) {

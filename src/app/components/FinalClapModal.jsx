@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 
-const US_PHOTOS = Array.from({ length: 90 }, (_, i) => {
+const US_PHOTOS = Array.from({ length: 125 }, (_, i) => {
   return `/images/final/us/${String(i + 1)}.jpeg`;
 });
 
@@ -35,7 +35,7 @@ export default function FinalClapModal({ onClose }) {
 
     const timer = setTimeout(() => {
       setStep("gifts");
-    }, 2500);
+    }, 800);
 
     return () => clearTimeout(timer);
   }, [step]);
